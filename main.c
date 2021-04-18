@@ -68,8 +68,8 @@ int deadzone_x = 1900;
 short back = KEY_ESC;
 short start = KEY_ENTER;
 short a = KEY_P;
-short b = KEY_ESC;
-short x = KEY_C;
+short b = KEY_F;
+short x = KEY_M;
 short y = KEY_A;
 short l1 = KEY_RIGHTSHIFT;
 short l2 = KEY_PAGEDOWN;
@@ -125,8 +125,8 @@ void handle_event(int type, int code, int value) {
 			if (quit == 1) {
 			emit(EV_KEY, back, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
-				system(quit_command);
-				exit(0);
+				emit(EV_KEY, back, 1);
+				emit(EV_SYN, SYN_REPORT, 0);
 			}
 
 			emit(EV_KEY, start, 1);
