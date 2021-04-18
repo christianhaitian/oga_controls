@@ -72,10 +72,10 @@ short b = KEY_F;
 short x = KEY_M;
 short y = KEY_A;
 short l1 = KEY_RIGHTSHIFT;
-short l2 = BTN_LEFT;
+short l2 = KEY_PAGEDOWN;
 short l3 = BTN_LEFT;
 short r1 = KEY_LEFTSHIFT;
-short r2 = BTN_RIGHT;
+short r2 = KEY_PAGEUP;
 short r3 = BTN_RIGHT;
 short up = KEY_UP;
 short down = KEY_DOWN;
@@ -202,14 +202,14 @@ void handle_event(int type, int code, int value) {
 			emit(EV_SYN, SYN_REPORT, 0);
 		}		
 
-		/*if (code == r2_key && (value == 1 || value == 2)) {
+		if (code == r2_key && (value == 1 || value == 2)) {
 			emit(EV_KEY, r2, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == r2_key && value == 0) {
 			emit(EV_KEY, r2, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
-		}*/		
+		}		
 
 		if (code == r3_key && (value == 1 || value == 2)) {
 			hold = 1;
