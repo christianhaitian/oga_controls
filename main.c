@@ -46,22 +46,22 @@ struct uinput_user_dev uidev;
 int debug = 0;
 char quit_command[100];
 
-int back_key = 704;
-int start_key = 709;
-int a_key = 305;
-int b_key = 304;
-int x_key = 307;
-int y_key = 308;
-int l1_key = 310;
-int l2_key = 706;
+int back_key = 311;
+int start_key = 310;
+int a_key = 304;
+int b_key = 305;
+int x_key = 306;
+int y_key = 307;
+int l1_key = 308;
+int l2_key = 314;
 int l3_key = 312;
-int r1_key = 311;
-int r2_key = 707;
+int r1_key = 309;
+int r2_key = 315;
 int r3_key = 313;
-int up_key = 544;
-int down_key = 545;
-int left_key = 546;
-int right_key = 547;
+int up_key = 17;
+int down_key = 17;
+int left_key = 16;
+int right_key = 16;
 int deadzone_y = 2100;
 int deadzone_x = 1900;
 
@@ -72,10 +72,10 @@ short b = KEY_F;
 short x = KEY_M;
 short y = KEY_A;
 short l1 = KEY_RIGHTSHIFT;
-short l2 = KEY_PAGEDOWN;
+short l2 = BTN_LEFT;
 short l3 = BTN_LEFT;
 short r1 = KEY_LEFTSHIFT;
-short r2 = KEY_PAGEUP;
+short r2 = BTN_RIGHT;
 short r3 = BTN_RIGHT;
 short up = KEY_UP;
 short down = KEY_DOWN;
@@ -120,11 +120,12 @@ void handle_event(int type, int code, int value) {
 			emit(EV_KEY, back, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
+		else if (code == back_key && value == 2) {
+			quit = 1;
+		}
 
 		if (code == start_key && value == 1) {
 			if (quit == 1) {
-			emit(EV_KEY, back, 1);
-			emit(EV_SYN, SYN_REPORT, 0);
 				emit(EV_KEY, back, 1);
 				emit(EV_SYN, SYN_REPORT, 0);
 			}
@@ -217,7 +218,11 @@ void handle_event(int type, int code, int value) {
 			emit(EV_KEY, r3, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
-		if (code == up_key && value == 1) {
+	}
+
+	// d-pad
+	if (type == 3) {
+		if (code == up_key && value == -1) {
 			emit(EV_KEY, up, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -236,7 +241,7 @@ void handle_event(int type, int code, int value) {
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
-		if (code == left_key && value == 1) {
+		if (code == left_key && value == -1) {
 			emit(EV_KEY, left, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -253,12 +258,10 @@ void handle_event(int type, int code, int value) {
 			emit(EV_KEY, right, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
-
 	}
 
-
 	// analog
-	if (type == 3) {
+	/*if (type == 3) {
 		// mouse movement, left analog
 		if (right_analog_mouse) {
 			if (code == 5) { // up/down
@@ -392,7 +395,7 @@ void handle_event(int type, int code, int value) {
 				}
 			}
 		}
-	}
+	}*/
 
 	if (debug) {
 		printf("type:%d code: %d value: %d\n", type, code, value);
@@ -576,7 +579,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// parse gamecontrollerdb.txt
-	config_option_t co;
+/*	config_option_t co;
     if ((co = read_config_file("gamecontrollerdb.txt")) != NULL) {
 	    while(1) {
 	    	if (strcmp(co->key, "back") == 0) {
@@ -674,9 +677,9 @@ int main(int argc, char* argv[]) {
 	            break;
 	        }
 	    }
-    }
+    }*/
 
-	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo2-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
+	fd_ev_joypad = open("/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick", O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
 
 	do {
