@@ -4,11 +4,11 @@ Emulated keyboard / mouse / joystick for the OGA
 # How to build
 ## Prereqs
 libevdev-dev
-
-git clone https://github.com/christianhaitian/oga_controls.git \
-cd oga_controls \
+```
+git clone https://github.com/christianhaitian/oga_controls.git
+cd oga_controls
 make all
-
+```
 # Howto
 Launch with `sudo ./oga_controls` or add current user to uinput via udev rule.
 
