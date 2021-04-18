@@ -4,6 +4,8 @@ Emulated keyboard / mouse / joystick for the OGA
 # How to build
 ## Prereqs
 libevdev-dev
+
+### Build
 ```
 git clone https://github.com/christianhaitian/oga_controls.git -b oga
 cd oga_controls
