@@ -94,6 +94,7 @@ int left_analog_mouse = 0;
 int right_analog_mouse = 0;
 
 int quit = 0;
+int hold = 0;
 
 void emit(int type, int code, int val) {
    struct input_event ev;
@@ -201,40 +202,48 @@ void handle_event(int type, int code, int value) {
 			emit(EV_SYN, SYN_REPORT, 0);
 		}		
 
-		if (code == r2_key && (value == 1 || value == 2)) {
+		/*if (code == r2_key && (value == 1 || value == 2)) {
 			emit(EV_KEY, r2, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == r2_key && value == 0) {
 			emit(EV_KEY, r2, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
-		}		
+		}*/		
 
 		if (code == r3_key && (value == 1 || value == 2)) {
-			emit(EV_KEY, r3, 1);
-			emit(EV_SYN, SYN_REPORT, 0);
+			hold = 1;
+			//emit(EV_KEY, r3, 1);
+			//emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == r3_key && value == 0) {
-			emit(EV_KEY, r3, 0);
-			emit(EV_SYN, SYN_REPORT, 0);
+			hold = 0;
+			//emit(EV_KEY, r3, 0);
+			//emit(EV_SYN, SYN_REPORT, 0);
 		}
 	}
 
 	// d-pad
 	if (type == 3) {
 		if (code == up_key && value == -1) {
-			emit(EV_KEY, up, 1);
-			emit(EV_SYN, SYN_REPORT, 0);
+			if (hold == 1){
+			}
+			else {
+				emit(EV_KEY, up, 1);
+				emit(EV_SYN, SYN_REPORT, 0);
+			}
 		}
 		else if (code == up_key && value == 0) {
 			emit(EV_KEY, up, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
-
 		if (code == down_key && value == 1) {
-			emit(EV_KEY, down, 1);
-			emit(EV_SYN, SYN_REPORT, 0);
-
+			if (hold == 1){
+			}
+			else {
+				emit(EV_KEY, down, 1);
+				emit(EV_SYN, SYN_REPORT, 0);
+			}
 		}
 		else if (code == down_key && value == 0) {
 			emit(EV_KEY, down, 0);
