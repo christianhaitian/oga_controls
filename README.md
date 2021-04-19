@@ -1,5 +1,5 @@
 # AnberPorts-Joystick
-Emulated keyboard / mouse / joystick for the OGA
+Emulated keyboard / mouse / joystick for the RK2020/OGA 1.0
 
 # How to build
 ## Prereqs
@@ -7,7 +7,7 @@ libevdev-dev
 
 ### Build
 ```
-git clone https://github.com/christianhaitian/oga_controls.git -b oga
+git clone https://github.com/christianhaitian/oga_controls.git -b rk2020
 cd oga_controls
 make all
 ```
