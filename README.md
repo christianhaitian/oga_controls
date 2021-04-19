@@ -1,5 +1,5 @@
 # AnberPorts-Joystick
-Emulated keyboard / mouse / joystick for the OGA
+Emulated keyboard / mouse / joystick for the RG351P/M/V
 
 # How to build
 ## Prereqs
