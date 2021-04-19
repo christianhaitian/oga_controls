@@ -1,5 +1,5 @@
 # AnberPorts-Joystick
-Emulated keyboard / mouse / joystick for the OGA
+Emulated keyboard / mouse / joystick for the RGB10/OGA 1.1 (BE)
 
 # How to build
 ## Prereqs
@@ -7,7 +7,7 @@ libevdev-dev
 
 ### Build
 ```
-git clone https://github.com/christianhaitian/oga_controls.git
+git clone https://github.com/christianhaitian/oga_controls.git -b rgb10
 cd oga_controls
 make all
 ```
