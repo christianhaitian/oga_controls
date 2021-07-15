@@ -46,18 +46,18 @@ struct uinput_user_dev uidev;
 int debug = 0;
 char quit_command[100];
 
-int back_key = 704;
-int start_key = 709;
+int back_key = 314;
+int start_key = 315;
 int a_key = 305;
 int b_key = 304;
 int x_key = 307;
 int y_key = 308;
 int l1_key = 310;
-int l2_key = 706;
-int l3_key = 705; /*minus key*/
+int l2_key = 312;
+int l3_key = 704; /*1 key*/
 int r1_key = 311;
-int r2_key = 707;
-int r3_key = 708; /*plus key*/
+int r2_key = 313;
+int r3_key = 705; /*2 key*/
 int up_key = 544;
 int down_key = 545;
 int left_key = 546;
@@ -635,7 +635,7 @@ int main(int argc, char* argv[]) {
 	    }
     }*/
 
-	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo2-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
+	fd_ev_joypad = open("/dev/input/by-path/platform-gameforce-gamepad-event-joystick", O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
 
 	do {
