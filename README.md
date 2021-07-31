@@ -7,7 +7,7 @@ libevdev-dev
 
 ### Build
 ```
-git clone https://github.com/christianhaitian/oga_controls.git -b rgb10
+git clone https://github.com/christianhaitian/oga_controls.git -b chi
 cd oga_controls
 make all
 ```
