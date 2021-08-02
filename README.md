@@ -16,6 +16,8 @@ Launch with `sudo ./oga_controls your-program your-rk3326-device`.  Ex. `sudo ./
 
 Allowed rk3326-device values = anbernic, chi, oga, ogs, rk2020
 
+The **your-program** field is to provide support for force quitting a running app using assigned hotkeys.  For instance, using the minus key + start will force quit **your-program** on the rgb10.
+
 # /etc/udev/rules.d
 ```
 SUBSYSTEM=="misc", KERNEL=="uinput", MODE="0660", GROUP="uinput"
