@@ -1221,7 +1221,7 @@ int main(int argc, char* argv[]) {
 	    }
     }
 
-	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo2-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
+	fd_ev_joypad = open(inputstr, O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
 
 	do {
