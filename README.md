@@ -1,4 +1,4 @@
-# AnberPorts-Joystick
+# oga_controls (formerly AnberPorts-Joystick from [krishenriksen](https://github.com/krishenriksen/AnberPorts-Joystick) with additions from [johnirvine1433's ThemeMaster-Joystick](https://github.com/JohnIrvine1433/ThemeMaster-Joystick)
 Emulated keyboard / mouse / joystick for the RGB10/OGA 1.1 (BE), RG351 P/M/V, RK2020/OGA 1.0, OGS, and the Chi
 
 # How to build
