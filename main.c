@@ -122,6 +122,7 @@ void handle_event_chi(int type, int code, int value) {
 		if (code == start_key && value == 1) {
 			if (hold == 1) {
 				system(quit_command);
+				system("sleep 0.2");
                 exit (0);
 			}
 			emit(EV_KEY, start, 1);
@@ -341,6 +342,7 @@ void handle_event_ogx(int type, int code, int value) {
 		if (code == start_key && value == 1) {
 			if (hold == 1) {
 				system(quit_command);
+				system("sleep 0.2");
                 exit (0);
 			}
 			emit(EV_KEY, start, 1);
@@ -562,6 +564,7 @@ void handle_event_rk2020(int type, int code, int value) {
 		if (code == start_key && value == 1) {
 			if (hold == 1) {
 				system(quit_command);
+				system("sleep 0.2");
                 exit (0);
 			}
 			emit(EV_KEY, start, 1);
@@ -780,6 +783,7 @@ void handle_event_anbernic(int type, int code, int value) {
 		if (code == start_key && value == 1) {
 			if (hold == 1) {
 				system(quit_command);
+				system("sleep 0.2");
                 exit (0);
 			}
 
@@ -1188,7 +1192,7 @@ int main(int argc, char* argv[]) {
   
 	// command line arguments
 	if (argc == 3) {
-      strcpy(quit_command, "sudo kill -9 $(pidof ");
+      strcpy(quit_command, "sudo kill -9 $(pgrep ");
 	  strcat(quit_command, argv[1]);
 	  strcat(quit_command, " )");
 
