@@ -46,36 +46,37 @@ struct uinput_user_dev uidev;
 int debug = 0;
 char quit_command[100];
 
-int back_key = 704;
-int start_key = 709;
-int a_key = 305;
-int b_key = 304;
-int x_key = 307;
-int y_key = 308;
-int l1_key = 310;
-int l2_key = 706;
-int l3_key = 705; /*minus key*/
-int r1_key = 311;
-int r2_key = 707;
-int r3_key = 708; /*plus key*/
-int up_key = 544;
-int down_key = 545;
-int left_key = 546;
-int right_key = 547;
-int deadzone_y = 2100;
-int deadzone_x = 1900;
+// Define variables to be used for key codes
+int back_key;
+int start_key;
+int a_key;
+int b_key;
+int x_key;
+int y_key;
+int up_key;
+int down_key;
+int left_key;
+int right_key;
+int l1_key;
+int l2_key;
+int l3_key;
+int r1_key;
+int r2_key;
+int r3_key;
+int deadzone_y;
+int deadzone_x;
 
 short back = KEY_ESC;
 short start = KEY_ENTER;
-short a = KEY_P;
-short b = KEY_F;
-short x = KEY_M;
+short a = KEY_V;
+short b = KEY_C;
+short x = KEY_X;
 short y = KEY_A;
-short l1 = KEY_RIGHTSHIFT;
-short l2 = KEY_PAGEDOWN;
+short l1 = KEY_B;
+short l2 = KEY_R;
 short l3 = BTN_LEFT;
-short r1 = KEY_LEFTSHIFT;
-short r2 = KEY_PAGEUP;
+short r1 = KEY_D;
+short r2 = KEY_S;
 short r3 = BTN_RIGHT;
 short up = KEY_UP;
 short down = KEY_DOWN;
@@ -107,24 +108,24 @@ void emit(int type, int code, int val) {
    write(uinp_fd, &ev, sizeof(ev));
 }
 
-void handle_event(int type, int code, int value) {
+void handle_event_ogx(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
-			//emit(EV_KEY, back, 0);
-			//emit(EV_SYN, SYN_REPORT, 0);
+			emit(EV_KEY, back, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == back_key && value == 0) {
-			//emit(EV_KEY, back, 0);
-			//emit(EV_SYN, SYN_REPORT, 0);
+			emit(EV_KEY, back, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		if (code == start_key && value == 1) {
 			if (hold == 1) {
-				emit(EV_KEY, back, 1);
-				emit(EV_SYN, SYN_REPORT, 0);
+				system(quit_command);
+                exit (0);
 			}
-			//emit(EV_KEY, start, 1);
-			//emit(EV_SYN, SYN_REPORT, 0);
+			emit(EV_KEY, start, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == start_key && value == 0) {
 			emit(EV_KEY, start, 0);
@@ -219,12 +220,8 @@ void handle_event(int type, int code, int value) {
 
 		//dpad
 		if (code == up_key && value == 1) {
-			if (hold == 1){
-			}
-			else {
-				emit(EV_KEY, up, 1);
-				emit(EV_SYN, SYN_REPORT, 0);
-			}
+			emit(EV_KEY, up, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == up_key && value == 0) {
 			emit(EV_KEY, up, 0);
@@ -232,59 +229,547 @@ void handle_event(int type, int code, int value) {
 		}
 
 		if (code == down_key && value == 1) {
-			if (hold == 1){
-			}
-			else {
-				emit(EV_KEY, down, 1);
-				emit(EV_SYN, SYN_REPORT, 0);
-			}
+			emit(EV_KEY, down, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == down_key && value == 0) {
-			if (hold == 1){
-			}
-			else {
 			emit(EV_KEY, down, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
-			}
 		}
 
 		if (code == left_key && value == 1) {
-			if (hold == 1){
-			}
-			else {
 			emit(EV_KEY, left, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
-			}
 		}
 		else if (code == left_key && value == 0) {
-			if (hold == 1){
-			}
-			else {
 			emit(EV_KEY, left, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
-			}
 		}
 
 		if (code == right_key && value == 1) {
-			if (hold == 1){
-			}
-			else {
 			emit(EV_KEY, right, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
-			}
 		}
 		else if (code == right_key && value == 0) {
-			if (hold == 1){
-			}
-			else {
 			emit(EV_KEY, right, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
-			}
 		}
 	}
 
 	// analog
-	/*if (type == 3) {
+	if (type == 3) {
+		// mouse movement, left analog
+		if (left_analog_mouse) {
+			if (code == 3) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_Y, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value > 0 && value < deadzone_x) {
+					emit(EV_REL, REL_Y, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			else if (code == 2) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_X, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value > 0 && value < deadzone_x) {
+					emit(EV_REL, REL_X, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+		else {	
+			if (code == 1) { // w/s
+				if (value > deadzone_y) {
+					emit(EV_KEY, left_analog_down, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_down, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_KEY, left_analog_up, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_up, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			
+			if (code == 0) { // a/d
+				if (value > deadzone_y) {
+					emit(EV_KEY, left_analog_right, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_right, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				
+				if (value < deadzone_x) {
+					emit(EV_KEY, left_analog_left, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_left, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+	}
+}
+
+void handle_event_rk2020(int type, int code, int value) {
+	if (type == 1) {
+		if (code == back_key && value == 1) {
+			hold = 1;
+			emit(EV_KEY, back, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == back_key && value == 0) {
+			hold = 0;
+			emit(EV_KEY, back, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == start_key && value == 1) {
+			if (hold == 1) {
+				system(quit_command);
+                exit (0);
+			}
+			emit(EV_KEY, start, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == start_key && value == 0) {
+			emit(EV_KEY, start, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == a_key && value == 1) {
+			emit(EV_KEY, a, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == a_key && value == 0) {
+			emit(EV_KEY, a, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == b_key && value == 1) {
+			emit(EV_KEY, b, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == b_key && value == 0) {
+			emit(EV_KEY, b, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == x_key && value == 1) {
+			emit(EV_KEY, x, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == x_key && value == 0) {
+			emit(EV_KEY, x, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == y_key && value == 1) {
+			emit(EV_KEY, y, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == y_key && value == 0) {
+			emit(EV_KEY, y, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == l1_key && value == 1) {
+			emit(EV_KEY, l1, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == l1_key && value == 0) {
+			emit(EV_KEY, l1, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}		
+
+		if (code == l2_key && value == 1) {
+			emit(EV_KEY, l2, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == l2_key && value == 0) {
+			emit(EV_KEY, l2, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == r1_key && value == 1) {
+			emit(EV_KEY, r1, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == r1_key && value == 0) {
+			emit(EV_KEY, r1, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}		
+
+		if (code == r2_key && value == 1) {
+			emit(EV_KEY, r2, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == r2_key && value == 0) {
+			emit(EV_KEY, r2, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}		
+
+		if (code == r3_key && value == 1) {
+			hold = 1;
+		}
+		else if (code == r3_key && value == 0) {
+			hold = 0;
+		}
+
+		//dpad
+		if (code == up_key && value == 1) {
+			emit(EV_KEY, up, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == up_key && value == 0) {
+			emit(EV_KEY, up, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == down_key && value == 1) {
+			emit(EV_KEY, down, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == down_key && value == 0) {
+			emit(EV_KEY, down, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == left_key && value == 1) {
+			emit(EV_KEY, left, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == left_key && value == 0) {
+			emit(EV_KEY, left, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == right_key && value == 1) {
+			emit(EV_KEY, right, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == right_key && value == 0) {
+			emit(EV_KEY, right, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+	}
+
+	// analog
+	if (type == 3) {
+		// mouse movement, left analog
+		if (left_analog_mouse) {
+			if (code == 3) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_Y, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value > 0 && value < deadzone_x) {
+					emit(EV_REL, REL_Y, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			else if (code == 2) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_X, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value > 0 && value < deadzone_x) {
+					emit(EV_REL, REL_X, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+		else {	
+			if (code == 1) { // w/s
+				if (value > deadzone_y) {
+					emit(EV_KEY, left_analog_down, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_down, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_KEY, left_analog_up, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_up, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			
+			if (code == 0) { // a/d
+				if (value > deadzone_y) {
+					emit(EV_KEY, left_analog_right, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_right, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				
+				if (value < deadzone_x) {
+					emit(EV_KEY, left_analog_left, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_left, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+	}
+}
+
+void handle_event_anbernic(int type, int code, int value) {
+	if (type == 1) {
+		if (code == back_key && value == 1) {
+			hold = 0;
+
+			emit(EV_KEY, back, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == back_key && value == 0) {
+			hold = 0;
+			emit(EV_KEY, back, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == back_key && value == 2) {
+			hold = 1;
+		}
+
+		if (code == start_key && value == 1) {
+			if (hold == 1) {
+				system(quit_command);
+                exit (0);
+			}
+
+			emit(EV_KEY, start, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == start_key && value == 0) {
+			emit(EV_KEY, start, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == a_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, a, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == a_key && value == 0) {
+			emit(EV_KEY, a, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == b_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, b, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == b_key && value == 0) {
+			emit(EV_KEY, b, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == x_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, x, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == x_key && value == 0) {
+			emit(EV_KEY, x, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == y_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, y, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == y_key && value == 0) {
+			emit(EV_KEY, y, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == l1_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, l1, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == l1_key && value == 0) {
+			emit(EV_KEY, l1, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}		
+
+		if (code == l2_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, l2, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == l2_key && value == 0) {
+			emit(EV_KEY, l2, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == l3_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, l3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == l3_key && value == 0) {
+			emit(EV_KEY, l3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == r1_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, r1, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == r1_key && value == 0) {
+			emit(EV_KEY, r1, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}		
+
+		if (code == r2_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, r2, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == r2_key && value == 0) {
+			emit(EV_KEY, r2, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}		
+
+		if (code == r3_key && (value == 1 || value == 2)) {
+			emit(EV_KEY, r3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == r3_key && value == 0) {
+			emit(EV_KEY, r3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+	}
+
+	// d-pad
+	if (type == 3) {
+		if (code == up_key && value == -1) {
+				emit(EV_KEY, up, 1);
+				emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == up_key && value == 0) {
+			emit(EV_KEY, up, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		if (code == down_key && value == 1) {
+				emit(EV_KEY, down, 1);
+				emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == down_key && value == 0) {
+			emit(EV_KEY, down, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == left_key && value == -1) {
+			emit(EV_KEY, left, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == left_key && value == 0) {
+			emit(EV_KEY, left, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == right_key && value == 1) {
+			emit(EV_KEY, right, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+		else if (code == right_key && value == 0) {
+			emit(EV_KEY, right, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
+		}
+	}
+
+	// analog
+	if (type == 3) {
+		// mouse movement, left analog
+		/*if (right_analog_mouse) {
+			if (code == 5) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_Y, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value >= 0 && value < deadzone_x) {
+					emit(EV_REL, REL_Y, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			else if (code == 4) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_X, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value >= 0 && value < deadzone_x) {
+					emit(EV_REL, REL_X, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+		else {
+			if (code == 5) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_KEY, right_analog_down, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_down, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value >= 0 && value < deadzone_x) {
+					emit(EV_KEY, right_analog_up, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_up, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			
+			if (code == 4) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_KEY, right_analog_right, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_right, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value >= 0 && value < deadzone_x) {
+					emit(EV_KEY, right_analog_left, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_left, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}*/
+
 		// mouse movement, left analog
 		if (left_analog_mouse) {
 			if (code == 3) { // up/down
@@ -351,10 +836,6 @@ void handle_event(int type, int code, int value) {
 				}
 			}
 		}
-	}*/
-
-	if (debug) {
-		printf("type:%d code: %d value: %d\n", type, code, value);
 	}
 }
 
@@ -484,16 +965,121 @@ short char_to_keycode(char str[]) {
 }
 
 int main(int argc, char* argv[]) {
+  char inputstr[100];
+  
 	// command line arguments
-	if (argc >= 2) {
-		if (strcmp(argv[1], "debug") == 0) {
-			debug = 1;
+	if (argc == 3) {
+      strcpy(quit_command, "sudo kill -9 $(pidof ");
+	  strcat(quit_command, argv[1]);
+	  strcat(quit_command, " )");
+
+    if (strcmp(argv[2], "anbernic") == 0) {
+      back_key = 311;
+      start_key = 310;
+      a_key = 304;
+      b_key = 305;
+      x_key = 306;
+      y_key = 307;
+      up_key = 17;
+      down_key = 17;
+      left_key = 16;
+      right_key = 16;
+      l1_key = 308;
+      l2_key = 314;
+      r1_key = 309;
+      r2_key = 315;
+      deadzone_y = 2100;
+      deadzone_x = 1900;
+      strcpy(inputstr, "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick");
+    }
+	else if (strcmp(argv[2], "oga") == 0) {
+      back_key = 704;
+      start_key = 709;
+      a_key = 305;
+      b_key = 304;
+      x_key = 307;
+      y_key = 308;
+      up_key = 544;
+      down_key = 545;
+      left_key = 546;
+      right_key = 547;
+      l1_key = 310;
+      l2_key = 706;
+      l3_key = 705; /*minus key*/
+      r1_key = 311;
+      r2_key = 707;
+      r3_key = 708; /*plus key*/
+      deadzone_y = 300;
+      deadzone_x = -300;
+      strcpy(inputstr, "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick");
+	}
+	else if (strcmp(argv[2], "rk2020") == 0) {
+      back_key = 704;
+      start_key = 709;
+      a_key = 305;
+      b_key = 304;
+      x_key = 307;
+      y_key = 308;
+      up_key = 544;
+      down_key = 545;
+      left_key = 546;
+      right_key = 547;
+      l1_key = 310;
+      l2_key = 706;
+      l3_key = 705; /*minus key*/
+      r1_key = 311;
+      r2_key = 707;
+      r3_key = 708; /*plus key*/
+      deadzone_y = 300;
+      deadzone_x = -300;
+      strcpy(inputstr, "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick");
+	}
+    else if (strcmp(argv[2], "ogs") == 0) {
+      back_key = 704;
+      start_key = 705;
+      a_key = 305;
+      b_key = 304;
+      x_key = 307;
+      y_key = 308;
+      up_key = 544;
+      down_key = 545;
+      left_key = 546;
+      right_key = 547;
+      l1_key = 310;
+      l2_key = 311;
+      r1_key = 312;
+      r2_key = 313;
+      deadzone_y = 300;
+      deadzone_x = -300;
+      strcpy(inputstr, "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick");
+    }
+    else if (strcmp(argv[2], "chi") == 0) {
+      back_key = 314;
+      start_key = 315;
+      a_key = 305;
+      b_key = 304;
+      x_key = 307;
+      y_key = 308;
+      up_key = 544;
+      down_key = 545;
+      left_key = 546;
+      right_key = 547;
+      l1_key = 310;
+      l2_key = 312;
+      r1_key = 311;
+      r2_key = 313;
+      deadzone_y = 300;
+      deadzone_x = -300;
+      strcpy(inputstr, "/dev/input/by-path/platform-gameforce-gamepad-event-joystick");
+    }
+    else {
+      printf("Error launching, unrecognised parameters\n");
+  		exit(0);
 		}
-		else {
-			strcpy(quit_command, "pgrep -f ");
-			strcat(quit_command, argv[1]);
-			strcat(quit_command, " | xargs kill -9");
-		}
+  }
+  else {
+    printf("Error launching, missing required parameters\n");
+		exit(0);
 	}
 
 	uinp_fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
@@ -534,9 +1120,9 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	// parse gamecontrollerdb.txt
-	/*config_option_t co;
-    if ((co = read_config_file("gamecontrollerdb.txt")) != NULL) {
+	// parse oga_controls_settings.txt if available
+	config_option_t co;
+    if ((co = read_config_file("oga_controls_settings.txt")) != NULL) {
 	    while(1) {
 	    	if (strcmp(co->key, "back") == 0) {
 	    		back = char_to_keycode(co->value);
@@ -633,7 +1219,7 @@ int main(int argc, char* argv[]) {
 	            break;
 	        }
 	    }
-    }*/
+    }
 
 	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo2-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
@@ -642,7 +1228,15 @@ int main(int argc, char* argv[]) {
 		rc_joypad = libevdev_next_event(dev_joypad, LIBEVDEV_READ_FLAG_NORMAL, &ev_joypad);
 
 		if (rc_joypad == LIBEVDEV_READ_STATUS_SUCCESS) {
-			handle_event(ev_joypad.type, ev_joypad.code, ev_joypad.value);
+           if (strcmp(argv[2], "anbernic") == 0) {
+              handle_event_anbernic(ev_joypad.type, ev_joypad.code, ev_joypad.value);
+            }
+           else if (strcmp(argv[2], "rk2020") == 0) {
+              handle_event_rk2020(ev_joypad.type, ev_joypad.code, ev_joypad.value);
+            }
+            else {
+              handle_event_ogx(ev_joypad.type, ev_joypad.code, ev_joypad.value);
+           }
 		}
 
 		usleep(100);
