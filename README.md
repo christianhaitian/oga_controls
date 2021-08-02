@@ -1,5 +1,5 @@
 # AnberPorts-Joystick
-Emulated keyboard / mouse / joystick for the RGB10/OGA 1.1 (BE)
+Emulated keyboard / mouse / joystick for the RGB10/OGA 1.1 (BE), RG351 P/M/V, RK2020/OGA 1.0, OGS, and the Chi
 
 # How to build
 ## Prereqs
@@ -7,12 +7,14 @@ libevdev-dev
 
 ### Build
 ```
-git clone https://github.com/christianhaitian/oga_controls.git -b rgb10
+git clone https://github.com/christianhaitian/oga_controls.git -b universal
 cd oga_controls
 make all
 ```
 # Howto
-Launch with `sudo ./oga_controls` or add current user to uinput via udev rule.
+Launch with `sudo ./oga_controls your-program your-rk3326-device`.  Ex. `sudo ./oga_controls bgdi oga`
+
+Allowed rk3326-device values = anbernic, chi, oga, ogs, rk2020
 
 # /etc/udev/rules.d
 ```
