@@ -1285,8 +1285,10 @@ int main(int argc, char* argv[]) {
       right_key = 547;
       l1_key = 310;
       l2_key = 312;
+      l3_key = 704; /*1 key*/
       r1_key = 311;
       r2_key = 313;
+      r3_key = 705; /*2 key*/
       deadzone_y = 300;
       deadzone_x = -300;
       strcpy(inputstr, "/dev/input/by-path/platform-gameforce-gamepad-event-joystick");
