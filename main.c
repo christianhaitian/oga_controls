@@ -285,17 +285,8 @@ void handle_event_chi(int type, int code, int value) {
 			}
 		}
 		else {	
-			if (code == 1) { // w/s
+			if (code == 0) { // w/s
 				if (value > deadzone_y) {
-					emit(EV_KEY, left_analog_up, 1);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-				else {
-					emit(EV_KEY, left_analog_up, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-
-				if (value < deadzone_x) {
 					emit(EV_KEY, left_analog_down, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
@@ -303,24 +294,33 @@ void handle_event_chi(int type, int code, int value) {
 					emit(EV_KEY, left_analog_down, 0);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
-			}
-			
-			if (code == 0) { // a/d
-				if (value > deadzone_y) {
-					emit(EV_KEY, left_analog_left, 1);
+
+				if (value < deadzone_x) {
+					emit(EV_KEY, left_analog_up, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 				else {
-					emit(EV_KEY, left_analog_left, 0);
+					emit(EV_KEY, left_analog_up, 0);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
-				
-				if (value < deadzone_x) {
+			}
+			
+			if (code == 1) { // a/d
+				if (value > deadzone_y) {
 					emit(EV_KEY, left_analog_right, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 				else {
 					emit(EV_KEY, left_analog_right, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				
+				if (value < deadzone_x) {
+					emit(EV_KEY, left_analog_left, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, left_analog_left, 0);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 			}
