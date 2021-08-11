@@ -259,6 +259,72 @@ void handle_event_chi(int type, int code, int value) {
 
 	// analog
 	if (type == 3) {
+		// mouse movement, right analog
+		if (right_analog_mouse) {
+			if (code == 3) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_Y, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_REL, REL_Y, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			else if (code == 4) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_X, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_REL, REL_X, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+		else {
+			if (code == 3) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_KEY, right_analog_down, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_down, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_KEY, right_analog_up, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_up, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			
+			if (code == 4) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_KEY, right_analog_right, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_right, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_KEY, right_analog_left, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+				else {
+					emit(EV_KEY, right_analog_left, 0);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
 		// mouse movement, left analog
 		if (left_analog_mouse) {
 			if (code == 3) { // up/down
