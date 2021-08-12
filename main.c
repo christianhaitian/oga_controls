@@ -577,6 +577,86 @@ void handle_event_ogx(int type, int code, int value) {
 
 	// analog
 	if (type == 3) {
+		// mouse movement, right analog
+		if (right_analog_mouse) {
+			if (code == 4) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_Y, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_REL, REL_Y, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+			else if (code == 3) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_REL, REL_X, -1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+
+				if (value < deadzone_x) {
+					emit(EV_REL, REL_X, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+				}
+			}
+		}
+		else {
+			if (code == 4) { // up/down
+				if (value > deadzone_y) {
+					emit(EV_KEY, right_analog_down, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+					right_analog_y = 2;
+				}
+				else {
+                        if (right_analog_y > 0 || right_analog_x > 0) {
+                                emit(EV_KEY, right_analog_down, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_y = right_analog_y - 1;
+                        }
+				}
+				if (value < deadzone_x) {
+					emit(EV_KEY, right_analog_up, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+                    right_analog_y = 2;
+				}
+				else {
+                        if (right_analog_y > 0 || right_analog_x > 0) {
+                                emit(EV_KEY, right_analog_up, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_y = right_analog_y - 1;
+                        }
+				}
+			}
+			
+			if (code == 3) { // left/right
+				if (value > deadzone_y) {
+					emit(EV_KEY, right_analog_right, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+                    right_analog_x = 2;
+				}
+				else {
+                        if (right_analog_x > 0 || right_analog_y > 0) {
+                                emit(EV_KEY, right_analog_right, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_x = right_analog_x - 1;
+                        }
+				}
+				if (value < deadzone_x) {
+					emit(EV_KEY, right_analog_left, 1);
+					emit(EV_SYN, SYN_REPORT, 0);
+                    right_analog_x = 2;
+				}
+				else {
+                        if (right_analog_x > 0 || right_analog_y > 0) {
+                                emit(EV_KEY, right_analog_left, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_x = right_analog_x - 1;
+                        }
+                }
+              }
+        }
 		// mouse movement, left analog
 		if (left_analog_mouse) {
 			if (code == 3) { // up/down
