@@ -91,6 +91,11 @@ short right_analog_down = KEY_DOWN;
 short right_analog_left = KEY_LEFT;
 short right_analog_right = KEY_RIGHT;
 
+int left_analog_x = 0;
+int left_analog_y = 0;
+int right_analog_x = 0;
+int right_analog_y = 0;
+
 int left_analog_mouse = 0;
 int right_analog_mouse = 0;
 
@@ -289,19 +294,26 @@ void handle_event_chi(int type, int code, int value) {
 				if (value > deadzone_y) {
 					emit(EV_KEY, right_analog_down, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+					right_analog_y = 2;
 				}
 				else {
-					emit(EV_KEY, right_analog_down, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (right_analog_y > 0 || right_analog_x > 0) {
+                                emit(EV_KEY, right_analog_down, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_y = right_analog_y - 1;
+                        }
 				}
-
 				if (value < deadzone_x) {
 					emit(EV_KEY, right_analog_up, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    right_analog_y = 2;
 				}
 				else {
-					emit(EV_KEY, right_analog_up, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (right_analog_y > 0 || right_analog_x > 0) {
+                                emit(EV_KEY, right_analog_up, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_y = right_analog_y - 1;
+                        }
 				}
 			}
 			
@@ -309,19 +321,26 @@ void handle_event_chi(int type, int code, int value) {
 				if (value > deadzone_y) {
 					emit(EV_KEY, right_analog_right, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    right_analog_x = 2;
 				}
 				else {
-					emit(EV_KEY, right_analog_right, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (right_analog_x > 0 || right_analog_y > 0) {
+                                emit(EV_KEY, right_analog_right, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_x = right_analog_x - 1;
+                        }
 				}
-
 				if (value < deadzone_x) {
 					emit(EV_KEY, right_analog_left, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    right_analog_x = 2;
 				}
 				else {
-					emit(EV_KEY, right_analog_left, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (right_analog_x > 0 || right_analog_y > 0) {
+                                emit(EV_KEY, right_analog_left, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                right_analog_x = right_analog_x - 1;
+                        }
 				}
 			}
 		}
@@ -351,44 +370,57 @@ void handle_event_chi(int type, int code, int value) {
 			}
 		}
 		else {	
-			if (code == 0) { // w/s
-				if (value > deadzone_y) {
-					emit(EV_KEY, left_analog_down, 1);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-				else {
-					emit(EV_KEY, left_analog_down, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-
-				if (value < deadzone_x) {
-					emit(EV_KEY, left_analog_up, 1);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-				else {
-					emit(EV_KEY, left_analog_up, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-			}
-			
-			if (code == 1) { // a/d
-				if (value > deadzone_y) {
-					emit(EV_KEY, left_analog_right, 1);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-				else {
-					emit(EV_KEY, left_analog_right, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-				
-				if (value < deadzone_x) {
-					emit(EV_KEY, left_analog_left, 1);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
-				else {
-					emit(EV_KEY, left_analog_left, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
+			if (code == 0) { // left analog y axis
+                    if (value > deadzone_y) {
+                            emit(EV_KEY, left_analog_down, 1);
+                            emit(EV_SYN, SYN_REPORT, 0);
+                             left_analog_y = 2;
+                     }
+                     else {
+                             if (left_analog_y > 0 || left_analog_x > 0) {
+                                     emit(EV_KEY, left_analog_down, 0);
+                                     emit(EV_SYN, SYN_REPORT, 0);
+                                     left_analog_y = left_analog_y - 1;
+                             }
+                     }
+                     if (value < deadzone_x) {
+                             emit(EV_KEY, left_analog_up, 1);
+                             emit(EV_SYN, SYN_REPORT, 0);
+                             left_analog_y = 2;
+                     }
+                     else {
+                             if (left_analog_y > 0 || left_analog_x > 0) {
+                                     emit(EV_KEY, left_analog_up, 0);
+                                     emit(EV_SYN, SYN_REPORT, 0);
+                                     left_analog_y = left_analog_y - 1;
+                             }
+                     }
+             }
+             if (code == 1) { // left analogue x axis
+                     if (value > deadzone_y) {
+                             emit(EV_KEY, left_analog_right, 1);
+                             emit(EV_SYN, SYN_REPORT, 0);
+                             left_analog_x = 2;
+                     }
+                     else {
+                             if (left_analog_x > 0 || left_analog_y > 0) {
+                                     emit(EV_KEY, left_analog_right, 0);
+                                     emit(EV_SYN, SYN_REPORT, 0);
+                                     left_analog_x = left_analog_x - 1;
+                             }
+                     }
+                     if (value < deadzone_x) {
+                             emit(EV_KEY, left_analog_left, 1);
+                             emit(EV_SYN, SYN_REPORT, 0);
+                             left_analog_x = 2;
+                     }
+                     else {
+                             if (left_analog_x > 0 || left_analog_y > 0) {
+                                     emit(EV_KEY, left_analog_left, 0);
+                                     emit(EV_SYN, SYN_REPORT, 0);
+                                     left_analog_x = left_analog_x - 1;
+                             }
+                     }
 			}
 		}
 	}
@@ -571,43 +603,56 @@ void handle_event_ogx(int type, int code, int value) {
 			}
 		}
 		else {	
-			if (code == 1) { // w/s
+			if (code == 1) { // left analog y axis
 				if (value > deadzone_y) {
 					emit(EV_KEY, left_analog_down, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+					left_analog_y = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_down, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                       if (left_analog_y > 0 || left_analog_x > 0) {
+                               emit(EV_KEY, left_analog_down, 0);
+                               emit(EV_SYN, SYN_REPORT, 0);
+                               left_analog_y = left_analog_y - 1;
+                       }
 				}
-
 				if (value < deadzone_x) {
 					emit(EV_KEY, left_analog_up, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+					left_analog_y = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_up, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                       if (left_analog_y > 0 || left_analog_x > 0) {
+                               emit(EV_KEY, left_analog_up, 0);
+                               emit(EV_SYN, SYN_REPORT, 0);
+                               left_analog_y = left_analog_y - 1;
+                       }
 				}
 			}
-			
-			if (code == 0) { // a/d
+			if (code == 0) { // left analog x axis
 				if (value > deadzone_y) {
 					emit(EV_KEY, left_analog_right, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    left_analog_x = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_right, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (left_analog_x > 0 || left_analog_y > 0) {
+                                emit(EV_KEY, left_analog_right, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                left_analog_x = left_analog_x - 1;
+                        }
 				}
-				
 				if (value < deadzone_x) {
 					emit(EV_KEY, left_analog_left, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    left_analog_x = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_left, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (left_analog_x > 0 || left_analog_y > 0) {
+                                emit(EV_KEY, left_analog_left, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                left_analog_x = left_analog_x - 1;
+                        }
 				}
 			}
 		}
@@ -786,44 +831,57 @@ void handle_event_rk2020(int type, int code, int value) {
 			}
 		}
 		else {	
-			if (code == 1) { // w/s
+			if (code == 1) { // left analog y axis
 				if (value > deadzone_y) {
 					emit(EV_KEY, left_analog_down, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    left_analog_y = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_down, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                       if (left_analog_y > 0 || left_analog_x > 0) {
+                               emit(EV_KEY, left_analog_down, 0);
+                               emit(EV_SYN, SYN_REPORT, 0);
+                               left_analog_y = left_analog_y - 1;
+                       }
 				}
-
 				if (value < deadzone_x) {
 					emit(EV_KEY, left_analog_up, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    left_analog_y = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_up, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                       if (left_analog_y > 0 || left_analog_x > 0) {
+                               emit(EV_KEY, left_analog_up, 0);
+                               emit(EV_SYN, SYN_REPORT, 0);
+                               left_analog_y = left_analog_y - 1;
+                       }
 				}
 			}
-			
-			if (code == 0) { // a/d
+			if (code == 0) { // left analog x axis
 				if (value > deadzone_y) {
 					emit(EV_KEY, left_analog_right, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    left_analog_x = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_right, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
+                        if (left_analog_x > 0 || left_analog_y > 0) {
+                                emit(EV_KEY, left_analog_right, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                left_analog_x = left_analog_x - 1;
+                        }
 				}
-				
 				if (value < deadzone_x) {
 					emit(EV_KEY, left_analog_left, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    left_analog_x = 2;
 				}
 				else {
-					emit(EV_KEY, left_analog_left, 0);
-					emit(EV_SYN, SYN_REPORT, 0);
-				}
+                        if (left_analog_x > 0 || left_analog_y > 0) {
+                                emit(EV_KEY, left_analog_left, 0);
+                                emit(EV_SYN, SYN_REPORT, 0);
+                                left_analog_x = left_analog_x - 1;
+                        }
+                }
 			}
 		}
 	}
