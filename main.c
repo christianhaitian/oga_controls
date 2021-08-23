@@ -68,8 +68,8 @@ int deadzone_x;
 
 short back = KEY_ESC;
 short start = KEY_ENTER;
-short a = KEY_V;
-short b = KEY_C;
+short a = KEY_ENTER;
+short b = KEY_ENTER;
 short x = KEY_X;
 short y = KEY_A;
 short l1 = KEY_B;
@@ -265,7 +265,7 @@ void handle_event_chi(int type, int code, int value) {
 	// analog
 	if (type == 3) {
 		// mouse movement, right analog
-		if (right_analog_mouse) {
+		/*if (right_analog_mouse) {
 			if (code == 3) { // up/down
 				if (value > deadzone_y) {
 					emit(EV_REL, REL_Y, -1);
@@ -343,7 +343,7 @@ void handle_event_chi(int type, int code, int value) {
                         }
 				}
 			}
-		}
+		}*/
 		// mouse movement, left analog
 		if (left_analog_mouse) {
 			if (code == 3) { // up/down
@@ -970,7 +970,7 @@ void handle_event_rk2020(int type, int code, int value) {
 void handle_event_anbernic(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
-			hold = 0;
+			hold = 1;
 
 			emit(EV_KEY, back, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
@@ -1497,8 +1497,8 @@ int main(int argc, char* argv[]) {
       r1_key = 311;
       r2_key = 313;
       r3_key = 705; /*2 key*/
-      deadzone_y = 300;
-      deadzone_x = -300;
+      deadzone_y = 500;
+      deadzone_x = -500;
       strcpy(inputstr, "/dev/input/by-path/platform-gameforce-gamepad-event-joystick");
     }
     else {
