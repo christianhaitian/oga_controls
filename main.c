@@ -1131,7 +1131,7 @@ void handle_event_anbernic(int type, int code, int value) {
 	// analog
 	if (type == 3) {
 		// mouse movement, left analog
-		/*if (right_analog_mouse) {
+		if (right_analog_mouse) {
 			if (code == 5) { // up/down
 				if (value > deadzone_y) {
 					emit(EV_REL, REL_Y, -1);
@@ -1195,7 +1195,7 @@ void handle_event_anbernic(int type, int code, int value) {
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 			}
-		}*/
+		}
 
 		// mouse movement, left analog
 		if (left_analog_mouse) {
