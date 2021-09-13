@@ -194,9 +194,13 @@ void handle_event_chi(int type, int code, int value) {
 
 		if (code == l3_key && value == 1) {
 			hold = 1;
+			emit(EV_KEY, l3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == l3_key && value == 0) {
 			hold = 0;
+			emit(EV_KEY, l3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		if (code == r1_key && value == 1) {
@@ -219,9 +223,13 @@ void handle_event_chi(int type, int code, int value) {
 
 		if (code == r3_key && value == 1) {
 			hold = 1;
+			emit(EV_KEY, r3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == r3_key && value == 0) {
 			hold = 0;
+			emit(EV_KEY, r3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		//dpad
@@ -507,9 +515,13 @@ void handle_event_ogx(int type, int code, int value) {
 
 		if (code == l3_key && value == 1) {
 			hold = 1;
+			emit(EV_KEY, l3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == l3_key && value == 0) {
 			hold = 0;
+			emit(EV_KEY, l3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		if (code == r1_key && value == 1) {
@@ -532,9 +544,13 @@ void handle_event_ogx(int type, int code, int value) {
 
 		if (code == r3_key && value == 1) {
 			hold = 1;
+			emit(EV_KEY, r3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == r3_key && value == 0) {
 			hold = 0;
+			emit(EV_KEY, r3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		//dpad
@@ -1476,8 +1492,10 @@ int main(int argc, char* argv[]) {
       right_key = 547;
       l1_key = 310;
       l2_key = 312;
+      l3_key = 707;
       r1_key = 311;
       r2_key = 313;
+      r3_key = 708;
       deadzone_y = 300;
       deadzone_x = -300;
       strcpy(inputstr, "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick");
