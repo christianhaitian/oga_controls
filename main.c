@@ -1413,8 +1413,10 @@ int main(int argc, char* argv[]) {
       right_key = 16;
       l1_key = 308;
       l2_key = 314;
+      l3_key = 312;
       r1_key = 309;
       r2_key = 315;
+      r3_key = 313;
       deadzone_y = 2100;
       deadzone_x = 1900;
       strcpy(inputstr, "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick");
