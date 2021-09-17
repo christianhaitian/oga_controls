@@ -1398,7 +1398,7 @@ int main(int argc, char* argv[]) {
 	if (argc == 3) {
       strcpy(quit_command, "sudo kill -9 $(pgrep ");
 	  strcat(quit_command, argv[1]);
-	  strcat(quit_command, " )");
+	  strcat(quit_command, " ) && rm -rf /dev/shm/portmaster");
 
     if (strcmp(argv[2], "anbernic") == 0) {
       back_key = 311;
