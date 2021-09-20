@@ -516,10 +516,12 @@ void handle_event_ogs(int type, int code, int value) {
 		}
 
 		if (code == l3_key && value == 1) {
-			hold = 1;
+			emit(EV_KEY, l3, 1);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == l3_key && value == 0) {
-			hold = 0;
+			emit(EV_KEY, l3, 0);
+			emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		if (code == r1_key && value == 1) {
