@@ -46,24 +46,24 @@ struct uinput_user_dev uidev;
 int debug = 0;
 char quit_command[100];
 
-int back_key = 314;
-int start_key = 315;
-int a_key = 305;
-int b_key = 304;
-int x_key = 307;
-int y_key = 308;
-int l1_key = 310;
-int l2_key = 312;
-int l3_key = 704; /*1 key*/
-int r1_key = 311;
-int r2_key = 313;
-int r3_key = 705; /*2 key*/
-int up_key = 544;
-int down_key = 545;
-int left_key = 546;
-int right_key = 547;
-int deadzone_y = 2100;
-int deadzone_x = 1900;
+back_key = 704;
+start_key = 705;
+a_key = 305;
+b_key = 304;
+x_key = 307;
+y_key = 308;
+up_key = 544;
+down_key = 545;
+left_key = 546;
+right_key = 547;
+l1_key = 310;
+r1_key = 311;
+l2_key = 312;
+r2_key = 313;
+l3_key = 707;
+r3_key = 708;
+deadzone_y = 300;
+deadzone_x = -300;
 
 short back = KEY_ESC;
 short start = KEY_ENTER;
