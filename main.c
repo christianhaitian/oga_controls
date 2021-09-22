@@ -110,10 +110,12 @@ void emit(int type, int code, int val) {
 void handle_event(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
+			hold = 1;
 			//emit(EV_KEY, back, 0);
 			//emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == back_key && value == 0) {
+			hold = 0;
 			//emit(EV_KEY, back, 0);
 			//emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -635,7 +637,7 @@ int main(int argc, char* argv[]) {
 	    }
     }*/
 
-	fd_ev_joypad = open("/dev/input/by-path/platform-gameforce-gamepad-event-joystick", O_RDONLY|O_NONBLOCK);
+	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo3-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
 
 	do {
