@@ -276,23 +276,23 @@ void handle_event_chi(int type, int code, int value) {
 		if (right_analog_mouse) {
 			if (code == 3) { // up/down
 				if (value > deadzone_y) {
-					emit(EV_REL, REL_Y, -1);
+					emit(EV_REL, REL_Y, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 
 				if (value < deadzone_x) {
-					emit(EV_REL, REL_Y, 1);
+					emit(EV_REL, REL_Y, -1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 			}
 			else if (code == 4) { // left/right
 				if (value > deadzone_y) {
-					emit(EV_REL, REL_X, -1);
+					emit(EV_REL, REL_X, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 
 				if (value < deadzone_x) {
-					emit(EV_REL, REL_X, 1);
+					emit(EV_REL, REL_X, -1);
 					emit(EV_SYN, SYN_REPORT, 0);
 				}
 			}
