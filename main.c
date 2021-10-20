@@ -1522,24 +1522,56 @@ void handle_event_anbernic(int type, int code, int value) {
 		if (right_analog_mouse) {
 			if (code == 5) { // up/down
 				if (value > deadzone_y) {
-					emit(EV_REL, REL_Y, -1);
+					emit(EV_REL, REL_Y, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_y = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_Y, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_y = left_analog_y - 1;
+                       			}
 				}
 
 				if (value >= 0 && value < deadzone_x) {
-					emit(EV_REL, REL_Y, 1);
+					emit(EV_REL, REL_Y, -1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_y = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_Y, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_y = left_analog_y - 1;
+                       			}
 				}
 			}
 			else if (code == 4) { // left/right
 				if (value > deadzone_y) {
-					emit(EV_REL, REL_X, -1);
+					emit(EV_REL, REL_X, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_x = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_X, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_x = left_analog_x - 1;
+                       			}
 				}
 
 				if (value >= 0 && value < deadzone_x) {
-					emit(EV_REL, REL_X, 1);
+					emit(EV_REL, REL_X, -1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_x = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_X, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_x = left_analog_x - 1;
+                       			}
 				}
 			}
 		}
@@ -1591,22 +1623,54 @@ void handle_event_anbernic(int type, int code, int value) {
 				if (value > deadzone_y) {
 					emit(EV_REL, REL_Y, -1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_y = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_Y, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_y = left_analog_y - 1;
+                       			}
 				}
 
 				if (value > 0 && value < deadzone_x) {
 					emit(EV_REL, REL_Y, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_y = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_Y, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_y = left_analog_y - 1;
+                       			}
 				}
 			}
 			else if (code == 2) { // left/right
 				if (value > deadzone_y) {
 					emit(EV_REL, REL_X, -1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_x = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_X, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_x = left_analog_x - 1;
+                       			}
 				}
 
 				if (value > 0 && value < deadzone_x) {
 					emit(EV_REL, REL_X, 1);
 					emit(EV_SYN, SYN_REPORT, 0);
+                    			left_analog_x = 2;
+				}
+				else {
+                       			if (left_analog_y > 0 || left_analog_x > 0) {
+    						emit(EV_REL, REL_X, 0);
+					        emit(EV_SYN, SYN_REPORT, 0);
+                               			left_analog_x = left_analog_x - 1;
+                       			}
 				}
 			}
 		}
