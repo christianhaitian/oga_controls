@@ -1848,7 +1848,7 @@ int main(int argc, char* argv[]) {
   
 	// command line arguments
 	if (argc == 3) {
-      strcpy(quit_command, "sudo kill -9 $(pgrep ");
+      strcpy(quit_command, "kill -9 $(pgrep ");
 	  strcat(quit_command, argv[1]);
 	  strcat(quit_command, " )");
 
