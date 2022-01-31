@@ -66,30 +66,30 @@ int r3_key;
 int deadzone_y;
 int deadzone_x;
 
-short back = KEY_ESC;
-short start = KEY_ENTER;
-short a = KEY_V;
-short b = KEY_C;
-short x = KEY_X;
-short y = KEY_A;
-short l1 = KEY_B;
-short l2 = KEY_R;
-short l3 = BTN_LEFT;
-short r1 = KEY_D;
-short r2 = KEY_S;
-short r3 = BTN_RIGHT;
-short up = KEY_UP;
-short down = KEY_DOWN;
-short left = KEY_LEFT;
-short right = KEY_RIGHT;
-short left_analog_up = KEY_UP;
-short left_analog_down = KEY_DOWN;
-short left_analog_left = KEY_LEFT;
-short left_analog_right = KEY_RIGHT;
-short right_analog_up = KEY_UP;
-short right_analog_down = KEY_DOWN;
-short right_analog_left = KEY_LEFT;
-short right_analog_right = KEY_RIGHT;
+short back = KEY_RIGHTALT;
+short start = KEY_RIGHTALT;
+short a = KEY_RIGHTALT;
+short b = KEY_RIGHTALT;
+short x = KEY_RIGHTALT;
+short y = KEY_RIGHTALT;
+short l1 = KEY_RIGHTALT;
+short l2 = KEY_RIGHTALT;
+short l3 = KEY_RIGHTALT;
+short r1 = KEY_RIGHTALT;
+short r2 = KEY_RIGHTALT;
+short r3 = KEY_RIGHTALT;
+short up = KEY_RIGHTALT;
+short down = KEY_RIGHTALT;
+short left = KEY_RIGHTALT;
+short right = KEY_RIGHTALT;
+short left_analog_up = KEY_RIGHTALT;
+short left_analog_down = KEY_RIGHTALT;
+short left_analog_left = KEY_RIGHTALT;
+short left_analog_right = KEY_RIGHTALT;
+short right_analog_up = KEY_RIGHTALT;
+short right_analog_down = KEY_RIGHTALT;
+short right_analog_left = KEY_RIGHTALT;
+short right_analog_right = KEY_RIGHTALT;
 
 int left_analog_x = 0;
 int left_analog_y = 0;
@@ -1358,7 +1358,7 @@ void handle_event_rk2020(int type, int code, int value) {
 void handle_event_anbernic(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
-			hold = 0;
+			hold = 1;
 
 			emit(EV_KEY, back, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
@@ -1370,6 +1370,9 @@ void handle_event_anbernic(int type, int code, int value) {
 		}
 		else if (code == back_key && value == 2) {
 			hold = 1;
+
+                        emit(EV_KEY, back, 1);
+                        emit(EV_SYN, SYN_REPORT, 0);
 		}
 
 		if (code == start_key && value == 1) {
@@ -1805,7 +1808,7 @@ short char_to_keycode(char str[]) {
 
 	else if (strcmp(str, "@") == 0) keycode = KEY_2; // with SHIFT
 	else if (strcmp(str, "#") == 0) keycode = KEY_3; // with SHIFT
-	//else if (strcmp(str, "€") == 0) keycode = KEY_5; // with ALTGR; not ASCII
+	//else if (strcmp(str, "\u20ac") == 0) keycode = KEY_5; // with ALTGR; not ASCII
 	else if (strcmp(str, "%") == 0) keycode = KEY_5; // with SHIFT
 	else if (strcmp(str, "&") == 0) keycode = KEY_7; // with SHIFT
 	else if (strcmp(str, "*") == 0) keycode = KEY_8; // with SHIFT; alternative is KEY_KPASTERISK
