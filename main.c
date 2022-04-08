@@ -1918,7 +1918,7 @@ int main(int argc, char* argv[]) {
 	}
     else if (strcmp(argv[2], "ogs") == 0) {
       back_key = 704;
-      start_key = 705;
+      start_key = 707;
       a_key = 305;
       b_key = 304;
       x_key = 307;
@@ -1929,10 +1929,10 @@ int main(int argc, char* argv[]) {
       right_key = 547;
       l1_key = 310;
       l2_key = 312;
-      l3_key = 707;
+      l3_key = 708;
       r1_key = 311;
       r2_key = 313;
-      r3_key = 708;
+      r3_key = 709;
       deadzone_y = 300;
       deadzone_x = -300;
       strcpy(inputstr, "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick");
