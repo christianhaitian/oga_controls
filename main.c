@@ -47,17 +47,17 @@ int debug = 0;
 char quit_command[100];
 
 int back_key = 704;
-int start_key = 709;
+int start_key = 705;
 int a_key = 305;
 int b_key = 304;
 int x_key = 307;
 int y_key = 308;
 int l1_key = 310;
-int l2_key = 706;
-int l3_key = 705; /*minus key*/
+int l2_key = 312;
+int l3_key = 708;
 int r1_key = 311;
-int r2_key = 707;
-int r3_key = 708; /*plus key*/
+int r2_key = 313;
+int r3_key = 709;
 int up_key = 544;
 int down_key = 545;
 int left_key = 546;
@@ -110,10 +110,12 @@ void emit(int type, int code, int val) {
 void handle_event(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
+			hold = 1;
 			//emit(EV_KEY, back, 0);
 			//emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == back_key && value == 0) {
+			hold = 0;
 			//emit(EV_KEY, back, 0);
 			//emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -183,13 +185,6 @@ void handle_event(int type, int code, int value) {
 		else if (code == l2_key && value == 0) {
 			emit(EV_KEY, l2, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
-		}
-
-		if (code == l3_key && value == 1) {
-			hold = 1;
-		}
-		else if (code == l3_key && value == 0) {
-			hold = 0;
 		}
 
 		if (code == r1_key && value == 1) {
