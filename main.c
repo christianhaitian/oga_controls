@@ -46,15 +46,15 @@ struct uinput_user_dev uidev;
 int debug = 0;
 char quit_command[100];
 
-int back_key = 704;
-int start_key = 705;
+int back_key = 706;
+int start_key = 707;
 int a_key = 305;
 int b_key = 304;
 int x_key = 307;
 int y_key = 308;
 int l1_key = 310;
 int l2_key = 312;
-int l3_key = 708;
+int l3_key = 704;
 int r1_key = 311;
 int r2_key = 313;
 int r3_key = 709;
@@ -110,12 +110,10 @@ void emit(int type, int code, int val) {
 void handle_event(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
-			hold = 1;
 			//emit(EV_KEY, back, 0);
 			//emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == back_key && value == 0) {
-			hold = 0;
 			//emit(EV_KEY, back, 0);
 			//emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -185,6 +183,13 @@ void handle_event(int type, int code, int value) {
 		else if (code == l2_key && value == 0) {
 			emit(EV_KEY, l2, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
+		}
+
+		if (code == l3_key && value == 1) {
+			hold = 1;
+		}
+		else if (code == l3_key && value == 0) {
+			hold = 0;
 		}
 
 		if (code == r1_key && value == 1) {
@@ -630,7 +635,7 @@ int main(int argc, char* argv[]) {
 	    }
     }*/
 
-	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo2-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
+	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo3-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
 
 	do {
