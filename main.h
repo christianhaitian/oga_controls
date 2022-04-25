@@ -83,4 +83,11 @@ void emit(int type, int code, int val) {
   write(uinp_fd, &ev, sizeof(ev));
 }
 
+
+void handleKillApplication() {
+  system(quit_command);
+  system("sleep 0.2");
+  exit (0);
+}
+
 #endif /* !MAIN_HEADER */

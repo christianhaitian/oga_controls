@@ -2,7 +2,6 @@
 #ifndef ANBERNIC_HEADER
 #define ANBERNIC_HEADER
 
-
 void handle_event_anbernic(int type, int code, int value) {
   if (type == 1) {
     if (code == back_key && value == 1) {
@@ -22,9 +21,7 @@ void handle_event_anbernic(int type, int code, int value) {
 
     if (code == start_key && value == 1) {
       if (hold == 1) {
-        system(quit_command);
-        system("sleep 0.2");
-        exit (0);
+        handleKillApplication();
       }
 
       emit(EV_KEY, start, 1);

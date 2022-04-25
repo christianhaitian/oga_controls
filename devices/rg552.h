@@ -15,9 +15,7 @@ void handle_event_rg552(int type, int code, int value) {
 
     if (code == start_key && value == 1) {
       if (hold == 1) {
-        system(quit_command);
-        system("sleep 0.2");
-        exit (0);
+        handleKillApplication();
       }
       emit(EV_KEY, start, 1);
       emit(EV_SYN, SYN_REPORT, 0);

@@ -41,6 +41,8 @@
 #include "devices/ogx.h"
 #include "devices/rk2020.h"
 #include "devices/anbernic.h"
+#include "devices/rgb10_max.h"
+
 
 #ifdef TESTING_LAG
 #include <sys/time.h>
@@ -198,6 +200,12 @@ int main(int argc, char* argv[]) {
     }
     else if (strcmp(argv[2], "rg552") == 0) {
       config_rg552(&inputstr[0]);
+    }
+    else if ((strcmp(argv[2], "rgb10maxtop") == 0) || (strcmp(argv[2], "rgb10max2top") == 0)) {
+      config_rgb10max_top(&inputstr[0]);
+    }
+    else if ((strcmp(argv[2], "rgb10maxnative") == 0) || (strcmp(argv[2], "rgb10max2native") == 0)) {
+      config_rgb10max_native(&inputstr[0]);
     }
     else {
       printf("Error launching, unrecognised parameters\n");
