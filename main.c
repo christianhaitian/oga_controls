@@ -35,6 +35,14 @@
 
 #include "parser.h"
 
+#ifdef TESTING_LAG
+#include <sys/time.h>
+#include <stdbool.h>
+#endif
+
+typedef void (*function_type)(int, int, int);
+static function_type handleEventFunction;
+
 struct libevdev* dev_joypad;
 int fd_ev_joypad;
 int rc_joypad;
@@ -112,6 +120,8 @@ void emit(int type, int code, int val) {
 
   write(uinp_fd, &ev, sizeof(ev));
 }
+
+// ******************* RG552
 
 void handle_event_rg552(int type, int code, int value) {
   if (type == 1) {
@@ -434,6 +444,35 @@ void handle_event_rg552(int type, int code, int value) {
   }
 }
 
+void config_rg552(char *inputstr)
+{
+#ifdef DEBUG
+  printf("OGA Contols - Configuring 'RG552' device\n");
+#endif
+  handleEventFunction = &handle_event_rg552;
+  back_key = 314;
+  start_key = 315;
+  a_key = 305;
+  b_key = 304;
+  x_key = 307;
+  y_key = 308;
+  up_key = 544;
+  down_key = 545;
+  left_key = 546;
+  right_key = 547;
+  l1_key = 310;
+  l2_key = 312;
+  l3_key = 317;
+  r1_key = 311;
+  r2_key = 313;
+  r3_key = 318;
+  deadzone_y = 300;
+  deadzone_x = -300;
+  strcpy(inputstr, "/dev/input/by-path/platform-singleadc-joypad-event-joystick");
+}
+
+// ******************* CHI
+
 void handle_event_chi(int type, int code, int value) {
   if (type == 1) {
     if (code == back_key && value == 1) {
@@ -754,6 +793,35 @@ void handle_event_chi(int type, int code, int value) {
     }
   }
 }
+
+void config_chi(char *inputstr)
+{
+#ifdef DEBUG
+  printf("OGA Contols - Configuring 'CHI' device\n");
+#endif
+  handleEventFunction = &handle_event_chi;
+  back_key = 314;
+  start_key = 315;
+  a_key = 305;
+  b_key = 304;
+  x_key = 307;
+  y_key = 308;
+  up_key = 544;
+  down_key = 545;
+  left_key = 546;
+  right_key = 547;
+  l1_key = 310;
+  l2_key = 312;
+  l3_key = 704; /*1 key*/
+  r1_key = 311;
+  r2_key = 313;
+  r3_key = 705; /*2 key*/
+  deadzone_y = 300;
+  deadzone_x = -300;
+  strcpy(inputstr, "/dev/input/by-path/platform-gameforce-gamepad-event-joystick");
+}
+
+// ******************* OGS
 
 void handle_event_ogs(int type, int code, int value) {
   if (type == 1) {
@@ -1103,6 +1171,35 @@ void handle_event_ogs(int type, int code, int value) {
     }
   }
 }
+
+void config_ogs(char *inputstr)
+{
+#ifdef DEBUG
+  printf("OGA Contols - Configuring 'OGS' device\n");
+#endif
+  handleEventFunction = &handle_event_ogs;
+  back_key = 704;
+  start_key = 705;
+  a_key = 305;
+  b_key = 304;
+  x_key = 307;
+  y_key = 308;
+  up_key = 544;
+  down_key = 545;
+  left_key = 546;
+  right_key = 547;
+  l1_key = 310;
+  l2_key = 312;
+  l3_key = 707;
+  r1_key = 311;
+  r2_key = 313;
+  r3_key = 708;
+  deadzone_y = 300;
+  deadzone_x = -300;
+  strcpy(inputstr, "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick");
+}
+
+// ******************* OGX
 
 void handle_event_ogx(int type, int code, int value) {
   if (type == 1) {
@@ -1455,6 +1552,35 @@ void handle_event_ogx(int type, int code, int value) {
   }
 }
 
+void config_ogx(char *inputstr)
+{
+#ifdef DEBUG
+  printf("OGA Contols - Configuring 'OGA/OGA 1.1' device\n");
+#endif
+  handleEventFunction = &handle_event_ogx;
+  back_key = 704;
+  start_key = 709;
+  a_key = 305;
+  b_key = 304;
+  x_key = 307;
+  y_key = 308;
+  up_key = 544;
+  down_key = 545;
+  left_key = 546;
+  right_key = 547;
+  l1_key = 310;
+  l2_key = 312;
+  l3_key = 705; /*minus key*/
+  r1_key = 311;
+  r2_key = 313;
+  r3_key = 708; /*plus key*/
+  deadzone_y = 300;
+  deadzone_x = -300;
+  strcpy(inputstr, "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick");
+}
+
+// ******************* RK2020
+
 void handle_event_rk2020(int type, int code, int value) {
   if (type == 1) {
     if (code == back_key && value == 1) {
@@ -1675,6 +1801,33 @@ void handle_event_rk2020(int type, int code, int value) {
     }
   }
 }
+
+void config_rk2020(char *inputstr)
+{
+#ifdef DEBUG
+  printf("OGA Contols - Configuring 'RK2020' device\n");
+#endif
+  handleEventFunction = &handle_event_rk2020;
+  back_key = 704;
+  start_key = 709;
+  a_key = 305;
+  b_key = 304;
+  x_key = 307;
+  y_key = 308;
+  up_key = 544;
+  down_key = 545;
+  left_key = 546;
+  right_key = 547;
+  l1_key = 310;
+  l2_key = 706;
+  r1_key = 311;
+  r2_key = 707;
+  deadzone_y = 300;
+  deadzone_x = -300;
+  strcpy(inputstr, "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick");
+}
+
+// ******************* ANBERNIC
 
 void handle_event_anbernic(int type, int code, int value) {
   if (type == 1) {
@@ -2039,6 +2192,35 @@ void handle_event_anbernic(int type, int code, int value) {
   }
 }
 
+void config_anbernic(char *inputstr)
+{
+#ifdef DEBUG
+  printf("OGA Contols - Configuring 'Anbernic' device\n");
+#endif
+  handleEventFunction = &handle_event_anbernic;
+  back_key = 311;
+  start_key = 310;
+  a_key = 304;
+  b_key = 305;
+  x_key = 306;
+  y_key = 307;
+  up_key = 17;
+  down_key = 17;
+  left_key = 16;
+  right_key = 16;
+  l1_key = 308;
+  l2_key = 314;
+  l3_key = 312;
+  r1_key = 309;
+  r2_key = 315;
+  r3_key = 313;
+  deadzone_y = 2100;
+  deadzone_x = 1900;
+  strcpy(inputstr, "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick");
+}
+
+// *******************
+
 // convert ASCII chars to key codes
 short char_to_keycode(char str[]) {
   short keycode;
@@ -2174,128 +2356,22 @@ int main(int argc, char* argv[]) {
     strcat(quit_command, " )");
 
     if (strcmp(argv[2], "anbernic") == 0) {
-      back_key = 311;
-      start_key = 310;
-      a_key = 304;
-      b_key = 305;
-      x_key = 306;
-      y_key = 307;
-      up_key = 17;
-      down_key = 17;
-      left_key = 16;
-      right_key = 16;
-      l1_key = 308;
-      l2_key = 314;
-      l3_key = 312;
-      r1_key = 309;
-      r2_key = 315;
-      r3_key = 313;
-      deadzone_y = 2100;
-      deadzone_x = 1900;
-      strcpy(inputstr, "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick");
+      config_anbernic(&inputstr[0]);
     }
     else if (strcmp(argv[2], "oga") == 0) {
-      back_key = 704;
-      start_key = 709;
-      a_key = 305;
-      b_key = 304;
-      x_key = 307;
-      y_key = 308;
-      up_key = 544;
-      down_key = 545;
-      left_key = 546;
-      right_key = 547;
-      l1_key = 310;
-      l2_key = 312;
-      l3_key = 705; /*minus key*/
-      r1_key = 311;
-      r2_key = 313;
-      r3_key = 708; /*plus key*/
-      deadzone_y = 300;
-      deadzone_x = -300;
-      strcpy(inputstr, "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick");
+      config_ogx(&inputstr[0]);
     }
     else if (strcmp(argv[2], "rk2020") == 0) {
-      back_key = 704;
-      start_key = 709;
-      a_key = 305;
-      b_key = 304;
-      x_key = 307;
-      y_key = 308;
-      up_key = 544;
-      down_key = 545;
-      left_key = 546;
-      right_key = 547;
-      l1_key = 310;
-      l2_key = 706;
-      r1_key = 311;
-      r2_key = 707;
-      deadzone_y = 300;
-      deadzone_x = -300;
-      strcpy(inputstr, "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick");
+      config_rk2020(&inputstr[0]);
     }
     else if (strcmp(argv[2], "ogs") == 0) {
-      back_key = 704;
-      start_key = 705;
-      a_key = 305;
-      b_key = 304;
-      x_key = 307;
-      y_key = 308;
-      up_key = 544;
-      down_key = 545;
-      left_key = 546;
-      right_key = 547;
-      l1_key = 310;
-      l2_key = 312;
-      l3_key = 707;
-      r1_key = 311;
-      r2_key = 313;
-      r3_key = 708;
-      deadzone_y = 300;
-      deadzone_x = -300;
-      strcpy(inputstr, "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick");
+      config_ogs(&inputstr[0]);
     }
     else if (strcmp(argv[2], "chi") == 0) {
-      back_key = 314;
-      start_key = 315;
-      a_key = 305;
-      b_key = 304;
-      x_key = 307;
-      y_key = 308;
-      up_key = 544;
-      down_key = 545;
-      left_key = 546;
-      right_key = 547;
-      l1_key = 310;
-      l2_key = 312;
-      l3_key = 704; /*1 key*/
-      r1_key = 311;
-      r2_key = 313;
-      r3_key = 705; /*2 key*/
-      deadzone_y = 300;
-      deadzone_x = -300;
-      strcpy(inputstr, "/dev/input/by-path/platform-gameforce-gamepad-event-joystick");
+      config_chi(&inputstr[0]);
     }
     else if (strcmp(argv[2], "rg552") == 0) {
-      back_key = 314;
-      start_key = 315;
-      a_key = 305;
-      b_key = 304;
-      x_key = 307;
-      y_key = 308;
-      up_key = 544;
-      down_key = 545;
-      left_key = 546;
-      right_key = 547;
-      l1_key = 310;
-      l2_key = 312;
-      l3_key = 317;
-      r1_key = 311;
-      r2_key = 313;
-      r3_key = 318;
-      deadzone_y = 300;
-      deadzone_x = -300;
-      strcpy(inputstr, "/dev/input/by-path/platform-singleadc-joypad-event-joystick");
+      config_rg552(&inputstr[0]);
     }
     else {
       printf("Error launching, unrecognised parameters\n");
@@ -2306,6 +2382,11 @@ int main(int argc, char* argv[]) {
     printf("Error launching, missing required parameters\n");
     exit(0);
   }
+
+#ifdef DEBUG
+  printf("OGA Contols - Configuration, device: %s, App To Kill: %s\n", argv[2], argv[1]);
+  printf("OGA Contols - Input device: %s\n", inputstr);
+#endif
 
   uinp_fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
   if (uinp_fd < 0) {
@@ -2452,26 +2533,23 @@ int main(int argc, char* argv[]) {
   do {
     rc_joypad = libevdev_next_event(dev_joypad, LIBEVDEV_READ_FLAG_NORMAL, &ev_joypad);
 
+#ifdef TESTING_LAG
+    struct timeval st, et;
+    gettimeofday(&st,NULL);
+    bool is_valid_event = (ev_joypad.type == 1);
+#endif
+
     if (rc_joypad == LIBEVDEV_READ_STATUS_SUCCESS) {
-      if (strcmp(argv[2], "anbernic") == 0) {
-        handle_event_anbernic(ev_joypad.type, ev_joypad.code, ev_joypad.value);
-      }
-      else if (strcmp(argv[2], "rk2020") == 0) {
-        handle_event_rk2020(ev_joypad.type, ev_joypad.code, ev_joypad.value);
-      }
-      else if (strcmp(argv[2], "chi") == 0) {
-        handle_event_chi(ev_joypad.type, ev_joypad.code, ev_joypad.value);
-      }
-      else if (strcmp(argv[2], "ogs") == 0) {
-        handle_event_ogs(ev_joypad.type, ev_joypad.code, ev_joypad.value);
-      }
-      else if (strcmp(argv[2], "rg552") == 0) {
-        handle_event_rg552(ev_joypad.type, ev_joypad.code, ev_joypad.value);
-      }
-      else {
-        handle_event_ogx(ev_joypad.type, ev_joypad.code, ev_joypad.value);
-      }
+      handleEventFunction(ev_joypad.type, ev_joypad.code, ev_joypad.value);
     }
+
+#ifdef TESTING_LAG
+    if (is_valid_event) {
+      gettimeofday(&et,NULL);
+      int elapsed = ((et.tv_sec - st.tv_sec) * 1000000) + (et.tv_usec - st.tv_usec);
+      printf("OGA Contols - Event elapsed time: %d microseconds\n", elapsed);
+    }
+#endif
     usleep(100);
   } while (rc_joypad == LIBEVDEV_READ_STATUS_SYNC || rc_joypad == LIBEVDEV_READ_STATUS_SUCCESS || rc_joypad == -EAGAIN);
 
