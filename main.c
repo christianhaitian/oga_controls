@@ -43,10 +43,10 @@
 #include "devices/anbernic.h"
 #include "devices/rgb10_max.h"
 
+#include <stdbool.h>
 
 #ifdef TESTING_LAG
 #include <sys/time.h>
-#include <stdbool.h>
 #endif
 
 // convert ASCII chars to key codes
@@ -174,7 +174,54 @@ short char_to_keycode(char str[]) {
   return keycode;
 }
 
+bool startsWith(const char* _string, const char* _start) {
+  return (strstr(_string, _start) - _string) == 0;
+}
+
+bool endsWith(const char* _string, const char*_end) {
+  int blen = strlen(_string);
+  int slen = strlen(_end);
+  return (blen >= slen) && (0 == strcmp(_string + blen - slen, _end));
+}
+
+void configDevice(const char* device, char *inputstr) {
+
+    if (strcmp(device, "anbernic") == 0) {
+      config_anbernic(inputstr);
+    }
+    else if (strcmp(device, "oga") == 0) {
+      config_ogx(inputstr);
+    }
+    else if (strcmp(device, "rk2020") == 0) {
+      config_rk2020(inputstr);
+    }
+    else if (strcmp(device, "ogs") == 0) {
+      config_ogs(inputstr);
+    }
+    else if (strcmp(device, "chi") == 0) {
+      config_chi(inputstr);
+    }
+    else if (strcmp(device, "rg552") == 0) {
+      config_rg552(inputstr);
+    }
+    else if (startsWith(device, "rgb10max") && endsWith(device, "top")) {
+      config_rgb10max_top(inputstr);
+    }
+    else if (startsWith(device, "rgb10max") && endsWith(device, "native")) {
+      config_rgb10max_native(inputstr);
+    }
+    else {
+      printf("Error launching, unrecognised parameters\n");
+      exit(0);
+    }
+}
+
 int main(int argc, char* argv[]) {
+
+#ifdef DEBUG
+  printf("OGA Contols - Configuration - device: %s, App To Kill: %s\n", argv[2], argv[1]);
+#endif
+
   char inputstr[100];
 
   // command line arguments
@@ -183,34 +230,7 @@ int main(int argc, char* argv[]) {
     strcat(quit_command, argv[1]);
     strcat(quit_command, " )");
 
-    if (strcmp(argv[2], "anbernic") == 0) {
-      config_anbernic(&inputstr[0]);
-    }
-    else if (strcmp(argv[2], "oga") == 0) {
-      config_ogx(&inputstr[0]);
-    }
-    else if (strcmp(argv[2], "rk2020") == 0) {
-      config_rk2020(&inputstr[0]);
-    }
-    else if (strcmp(argv[2], "ogs") == 0) {
-      config_ogs(&inputstr[0]);
-    }
-    else if (strcmp(argv[2], "chi") == 0) {
-      config_chi(&inputstr[0]);
-    }
-    else if (strcmp(argv[2], "rg552") == 0) {
-      config_rg552(&inputstr[0]);
-    }
-    else if ((strcmp(argv[2], "rgb10maxtop") == 0) || (strcmp(argv[2], "rgb10max2top") == 0)) {
-      config_rgb10max_top(&inputstr[0]);
-    }
-    else if ((strcmp(argv[2], "rgb10maxnative") == 0) || (strcmp(argv[2], "rgb10max2native") == 0)) {
-      config_rgb10max_native(&inputstr[0]);
-    }
-    else {
-      printf("Error launching, unrecognised parameters\n");
-      exit(0);
-    }
+    configDevice(argv[2], &inputstr[0]);
   }
   else {
     printf("Error launching, missing required parameters\n");
@@ -218,7 +238,6 @@ int main(int argc, char* argv[]) {
   }
 
 #ifdef DEBUG
-  printf("OGA Contols - Configuration, device: %s, App To Kill: %s\n", argv[2], argv[1]);
   printf("OGA Contols - Input device: %s\n", inputstr);
 #endif
 
