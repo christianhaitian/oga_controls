@@ -46,8 +46,8 @@ struct uinput_user_dev uidev;
 int debug = 0;
 char quit_command[100];
 
-back_key = 704;
-start_key = 705;
+back_key = 314;
+start_key = 315;    
 a_key = 305;
 b_key = 304;
 x_key = 307;
@@ -57,11 +57,11 @@ down_key = 545;
 left_key = 546;
 right_key = 547;
 l1_key = 310;
-r1_key = 311;
 l2_key = 312;
+l3_key = 317; 
+r1_key = 311;
 r2_key = 313;
-l3_key = 707;
-r3_key = 708;
+r3_key = 318; 
 deadzone_y = 300;
 deadzone_x = -300;
 
@@ -637,7 +637,7 @@ int main(int argc, char* argv[]) {
 	    }
     }*/
 
-	fd_ev_joypad = open("/dev/input/by-path/platform-odroidgo3-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
+	fd_ev_joypad = open("/dev/input/by-path/platform-singleadc-joypad-event-joystick", O_RDONLY|O_NONBLOCK);
 	rc_joypad = libevdev_new_from_fd(fd_ev_joypad, &dev_joypad);
 
 	do {
