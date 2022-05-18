@@ -2469,7 +2469,7 @@ int main(int argc, char* argv[]) {
               handle_event_ogs(ev_joypad.type, ev_joypad.code, ev_joypad.value);
            }
            else if (strcmp(argv[2], "rg503") == 0) {
-              handle_event_rg552(ev_joypad.type, ev_joypad.code, ev_joypad.value);
+              handle_event_rg503(ev_joypad.type, ev_joypad.code, ev_joypad.value);
            }
            else {
               handle_event_ogx(ev_joypad.type, ev_joypad.code, ev_joypad.value);
