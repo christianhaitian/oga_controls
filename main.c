@@ -35,6 +35,7 @@
 
 #include "main.h"
 #include "parser.h"
+#include "devices/rg503.h"
 #include "devices/rg552.h"
 #include "devices/chi.h"
 #include "devices/ogs.h"
@@ -203,6 +204,9 @@ void configDevice(const char* device, char *inputstr) {
     }
     else if (strcmp(device, "rg552") == 0) {
       config_rg552(inputstr);
+    }
+    else if (strcmp(device, "rg503") == 0) {
+      config_rg503(inputstr);
     }
     else if (startsWith(device, "rgb10max") && endsWith(device, "top")) {
       config_rgb10max_top(inputstr);
