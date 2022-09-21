@@ -316,12 +316,32 @@ void handle_event_rgb10max(int type, int code, int value) {
   }
 }
 
-void config_rgb10max_top(char *inputstr)
+void handle_only_quit_event_rgb10max(int type, int code, int value) {
+  if (type == 1) {
+    if (code == back_key && value == 1) {
+      hold = 1;
+    }
+    else if (code == back_key && value == 0) {
+      hold = 0;
+    }
+
+    if (code == start_key && value == 1) {
+      if (hold == 1) {
+        handleKillApplication();
+      }
+    }
+  }
+}
+
+void config_rgb10max_top(char *inputstr, bool only_quit_events)
 {
 #ifdef DEBUG
 	printf("OGA Contols - Configuring 'RGB10 MAX/MAX2 Top' device\n");
 #endif
 	handleEventFunction = &handle_event_rgb10max;
+  if (only_quit_events)
+    handleEventFunction = &handle_only_quit_event_rgb10max;
+
 	back_key = 704;
 	start_key = 705;
 	a_key = 305;
@@ -343,12 +363,14 @@ void config_rgb10max_top(char *inputstr)
 	strcpy(inputstr, "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick");
 }
 
-void config_rgb10max_native(char *inputstr)
-{
+void config_rgb10max_native(char *inputstr, bool only_quit_events) {
 #ifdef DEBUG
 	printf("OGA Contols - Configuring 'RGB10 MAX/MAX2 Native' device\n");
 #endif
 	handleEventFunction = &handle_event_rgb10max;
+  if (only_quit_events)
+    handleEventFunction = &handle_only_quit_event_rgb10max;
+
 	back_key = 706;
 	start_key = 707;
 	a_key = 305;

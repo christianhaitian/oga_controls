@@ -33,18 +33,14 @@
 #include <libevdev-1.0/libevdev/libevdev.h>
 #include <libevdev-1.0/libevdev/libevdev-uinput.h>
 
+#include <stdbool.h>
+
 #include "main.h"
 #include "parser.h"
 #include "devices/rg503.h"
-#include "devices/rg552.h"
-#include "devices/chi.h"
 #include "devices/ogs.h"
 #include "devices/ogx.h"
-#include "devices/rk2020.h"
-#include "devices/anbernic.h"
 #include "devices/rgb10_max.h"
-
-#include <stdbool.h>
 
 #ifdef TESTING_LAG
 #include <sys/time.h>
@@ -185,34 +181,22 @@ bool endsWith(const char* _string, const char*_end) {
   return (blen >= slen) && (0 == strcmp(_string + blen - slen, _end));
 }
 
-void configDevice(const char* device, char *inputstr) {
+void configDevice(const char* device, char *inputstr, bool only_quit_events) {
 
-    if (strcmp(device, "anbernic") == 0) {
-      config_anbernic(inputstr);
-    }
-    else if (strcmp(device, "oga") == 0) {
-      config_ogx(inputstr);
-    }
-    else if (strcmp(device, "rk2020") == 0) {
-      config_rk2020(inputstr);
+    if (strcmp(device, "oga") == 0) {
+      config_ogx(inputstr, only_quit_events);
     }
     else if (strcmp(device, "ogs") == 0) {
-      config_ogs(inputstr);
-    }
-    else if (strcmp(device, "chi") == 0) {
-      config_chi(inputstr);
-    }
-    else if (strcmp(device, "rg552") == 0) {
-      config_rg552(inputstr);
+      config_ogs(inputstr, only_quit_events);
     }
     else if (strcmp(device, "rg503") == 0) {
-      config_rg503(inputstr);
+      config_rg503(inputstr, only_quit_events);
     }
     else if (startsWith(device, "rgb10max") && endsWith(device, "top")) {
-      config_rgb10max_top(inputstr);
+      config_rgb10max_top(inputstr, only_quit_events);
     }
     else if (startsWith(device, "rgb10max") && endsWith(device, "native")) {
-      config_rgb10max_native(inputstr);
+      config_rgb10max_native(inputstr, only_quit_events);
     }
     else {
       printf("Error launching, unrecognised parameters\n");
@@ -229,12 +213,16 @@ int main(int argc, char* argv[]) {
   char inputstr[100];
 
   // command line arguments
-  if (argc == 3) {
+  if ((argc == 3) || (argc == 4)) {
     strcpy(quit_command, "kill -9 $(pgrep ");
     strcat(quit_command, argv[1]);
     strcat(quit_command, " )");
 
-    configDevice(argv[2], &inputstr[0]);
+    bool only_quit_events = false;
+    if (argc == 4)
+      only_quit_events = (strcmp(argv[3], "--only-quit-events") == 0);
+
+     configDevice(argv[2], &inputstr[0], only_quit_events);
   }
   else {
     printf("Error launching, missing required parameters\n");
@@ -243,6 +231,8 @@ int main(int argc, char* argv[]) {
 
 #ifdef DEBUG
   printf("OGA Contols - Input device: %s\n", inputstr);
+  if (argc == 4)
+    printf("              Only quit events: %s\n", ((strcmp(argv[3], "--only-quit-events") == 0) ? "true" : "false"));
 #endif
 
   uinp_fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);

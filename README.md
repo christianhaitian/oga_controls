@@ -7,7 +7,7 @@ libevdev-dev
 
 ### Build
 ```
-git clone https://github.com/christianhaitian/oga_controls.git -b universal
+git clone https://github.com/JuanMiguelBG/oga_controls.git -b universal
 cd oga_controls
 make all
 ```

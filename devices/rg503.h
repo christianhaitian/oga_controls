@@ -2,13 +2,17 @@
 #ifndef RG503_HEADER
 #define RG503_HEADER
 
+#include <stdbool.h>
+
 void handle_event_rg503(int type, int code, int value) {
   if (type == 1) {
     if (code == back_key && value == 1) {
+      hold = 1;
       emit(EV_KEY, back, 1);
       emit(EV_SYN, SYN_REPORT, 0);
     }
     else if (code == back_key && value == 0) {
+      hold = 0;
       emit(EV_KEY, back, 0);
       emit(EV_SYN, SYN_REPORT, 0);
     }
@@ -80,12 +84,10 @@ void handle_event_rg503(int type, int code, int value) {
     }
 
     if (code == l3_key && value == 1) {
-      hold = 1;
       emit(EV_KEY, l3, 1);
       emit(EV_SYN, SYN_REPORT, 0);
     }
     else if (code == l3_key && value == 0) {
-      hold = 0;
       emit(EV_KEY, l3, 0);
       emit(EV_SYN, SYN_REPORT, 0);
     }
@@ -321,12 +323,31 @@ void handle_event_rg503(int type, int code, int value) {
   }
 }
 
-void config_rg503(char *inputstr)
-{
+void handle_only_quit_event_rg503(int type, int code, int value) {
+  if (type == 1) {
+    if (code == back_key && value == 1) {
+      hold = 1;
+    }
+    else if (code == back_key && value == 0) {
+      hold = 0;
+    }
+
+    if (code == start_key && value == 1) {
+      if (hold == 1) {
+        handleKillApplication();
+      }
+    }
+  }
+}
+
+void config_rg503(char *inputstr, bool only_quit_events) {
 #ifdef DEBUG
   printf("OGA Contols - Configuring 'RG503' device\n");
 #endif
   handleEventFunction = &handle_event_rg503;
+  if (only_quit_events)
+    handleEventFunction = &handle_only_quit_event_rg503;
+
   back_key = 314;
   start_key = 315;
   a_key = 305;
