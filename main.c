@@ -68,28 +68,28 @@ int deadzone_x;
 
 short back = KEY_ESC;
 short start = KEY_ENTER;
-short a = KEY_V;
-short b = KEY_C;
-short x = KEY_X;
-short y = KEY_A;
-short l1 = KEY_B;
-short l2 = KEY_R;
-short l3 = BTN_LEFT;
-short r1 = KEY_D;
-short r2 = KEY_S;
-short r3 = BTN_RIGHT;
+short a = KEY_ENTER;
+short b = KEY_ENTER;
+short x = KEY_RIGHTALT;
+short y = KEY_RIGHTALT;
+short l1 = KEY_RIGHTALT;
+short l2 = KEY_RIGHTALT;
+short l3 = KEY_RIGHTALT;
+short r1 = KEY_RIGHTALT;
+short r2 = KEY_RIGHTALT;
+short r3 = KEY_RIGHTALT;
 short up = KEY_UP;
 short down = KEY_DOWN;
 short left = KEY_LEFT;
 short right = KEY_RIGHT;
-short left_analog_up = KEY_UP;
-short left_analog_down = KEY_DOWN;
-short left_analog_left = KEY_LEFT;
-short left_analog_right = KEY_RIGHT;
-short right_analog_up = KEY_UP;
-short right_analog_down = KEY_DOWN;
-short right_analog_left = KEY_LEFT;
-short right_analog_right = KEY_RIGHT;
+short left_analog_up = KEY_RIGHTALT;
+short left_analog_down = KEY_RIGHTALT;
+short left_analog_left = KEY_RIGHTALT;
+short left_analog_right = KEY_RIGHTALT;
+short right_analog_up = KEY_RIGHTALT;
+short right_analog_down = KEY_RIGHTALT;
+short right_analog_left = KEY_RIGHTALT;
+short right_analog_right = KEY_RIGHTALT;
 
 int left_analog_x = 0;
 int left_analog_y = 0;
@@ -116,10 +116,12 @@ void emit(int type, int code, int val) {
 void handle_event_rg552(int type, int code, int value) {
 	if (type == 1) {
 		if (code == back_key && value == 1) {
+			hold = 1;
 			emit(EV_KEY, back, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == back_key && value == 0) {
+			hold = 0;
 			emit(EV_KEY, back, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -193,12 +195,10 @@ void handle_event_rg552(int type, int code, int value) {
 		}
 
 		if (code == l3_key && value == 1) {
-			hold = 1;
 			emit(EV_KEY, l3, 1);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
 		else if (code == l3_key && value == 0) {
-			hold = 0;
 			emit(EV_KEY, l3, 0);
 			emit(EV_SYN, SYN_REPORT, 0);
 		}
@@ -2171,7 +2171,7 @@ int main(int argc, char* argv[]) {
 	if (argc == 3) {
       strcpy(quit_command, "kill -9 $(pgrep ");
 	  strcat(quit_command, argv[1]);
-	  strcat(quit_command, " )");
+	  strcat(quit_command, " ) && pkill ogage");
 
     if (strcmp(argv[2], "anbernic") == 0) {
       back_key = 311;
