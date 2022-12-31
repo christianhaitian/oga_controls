@@ -7,10 +7,20 @@ libevdev-dev
 
 ### Build
 ```
-git clone https://github.com/christianhaitian/oga_controls.git -b universal
+git clone https://github.com/JuanMiguelBG/oga_controls.git -b universal
 cd oga_controls
 make all
 ```
+
+If you want some debug info, add CXFLAGS="-DDEBUG" to the make command line.
+
+If you want some test info, add CXFLAGS="-DTESTING_LAG" to the make command line.
+
+If you want to debug the code, add CXFLAGS="-g" to the make command line.
+
+You can merge that flags too, example: CXFLAGS="-DTESTING_LAG -DDEBUG -g"
+
+
 # Howto
 Launch with `sudo ./oga_controls your-program your-rk3326-device`.  Ex. `sudo ./oga_controls bgdi oga`
 
