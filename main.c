@@ -2171,7 +2171,7 @@ int main(int argc, char* argv[]) {
 	if (argc == 3) {
       strcpy(quit_command, "kill -9 $(pgrep ");
 	  strcat(quit_command, argv[1]);
-	  strcat(quit_command, " ) && pkill ogage");
+	  strcat(quit_command, " ) && pkill ogage && [ ! -z $(pidof osk) ] && pkill osk");
 
     if (strcmp(argv[2], "anbernic") == 0) {
       back_key = 311;
